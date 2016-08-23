@@ -1,6 +1,7 @@
 package com.yiniu.weka;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -71,13 +72,63 @@ public class MathUtil {
 		list.add(new Float[]{maxValue,Float.POSITIVE_INFINITY});
 		return list;
 	}
+	
+	/**
+	 * 
+	 * @Description 对数字数据进行分组离散化处理
+	 * @para @param numbers
+	 * @para @param list
+	 * @return float[]
+	 */
+	public static float[] discreteFilter(float[] numbers,List<Float[]> list){
+		int groupNum = list.size();
+		List<String> groupList = new ArrayList<String>();
+		for(int i=0; i < numbers.length;i++){
+			int flag=0;
+			for(Float[] l : list){
+				if(numbers[i]>l[0]&&numbers[i]<=l[1]){
+					numbers[i]=flag;
+					break;
+				}
+				flag++;
+			}
+		}
+		return numbers;
+	}
 
+	/**
+	 * 
+	 * @Description 把数字数组转化为字符串数组，便于分类算法的使用
+	 * @para @param t
+	 * @return String[]
+	 */
+	public static String[] floatToString(float[] t){
+		String s = Arrays.toString(t);
+		s = s.substring(1, s.length()-1);
+		String[] str = s.split(",");
+		System.out.println(str[0]+str[1]);
+		return str;
+	}
+	
+	public static String[] intToString(int[] t){
+		String s = Arrays.toString(t);
+		s = s.substring(1, s.length()-1);
+		String[] str = s.split(",");
+		System.out.println(str[0]+str[1]);
+		return str;
+	}
+	
+	
 	public static void main(String[] args) {
 		float[] arr = new float[] { 2, 8, 3, 7, 4, 20, 5, 87, 23, 65 };
+		float[] arr2 = new float[] { 23, 8, 3, 7, 4, 20, 5, 87, 23, 65 ,100,343,1,-100,34};
+		MathUtil.floatToString(arr2);
 		MathUtil mathUtil = new MathUtil();
-		List<Float[]> list = mathUtil.divGroups(arr, 5);
-		for(Float[] f : list){
-			System.out.println(f[0]+"---"+f[1]);
+		List<Float[]> list1 = mathUtil.divGroups(arr, 5);
+		float[] list = mathUtil.discreteFilter(arr2, list1);
+		for(float f : list){
+			System.out.println(f);
 		}
+		
 	}
 }
